@@ -1,0 +1,29 @@
+name: Release Pipeline
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy_local:
+    runs-on: hpzbookg9
+
+    steps:
+    - name: Stop Website
+      run: Stop-IISSite -Name "Cart Demo" -Confirm:$false
+
+    - name: Prepare local folders
+      run: |       
+        Remove-Item 'c:\pub\react-03_bak1' -Recurse -ErrorAction Ignore
+        Remove-Item 'c:\pub\react-03_bak' -Recurse -ErrorAction Ignore
+        ren c:\pub\react-03 react-03_bak
+        md c:\pub\react-03
+
+    - name: Download artifact
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: BuildPipeline.yml
+        name: artifacts
+        path: c:\pub\react-03
+
+    - name: Start Website
+      run: Start-IISSite -Name "Cart Demo"
