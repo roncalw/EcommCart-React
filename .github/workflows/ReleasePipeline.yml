@@ -28,4 +28,6 @@ jobs:
         path: c:\pub\react-03
 
     - name: Start Website
-      run: Start-IISSite -Name "Cart Demo"
+      shell: PowerShell
+      run: |
+        Start-IISSite -Name "Cart Demo"
