@@ -8,7 +8,9 @@ jobs:
 
     steps:
     - name: Stop Website
-      run: Stop-IISSite -Name "Cart Demo" -Confirm:$false
+      shell: PowerShell
+      run: |
+        Stop-IISSite -Name "Cart Demo" -Confirm:$false
 
     - name: Prepare local folders
       run: |       
