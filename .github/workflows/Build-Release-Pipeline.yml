@@ -60,3 +60,34 @@ jobs:
       run: |
         # Start the IIS website
         C:\Windows\System32\inetsrv\appcmd start site /site.name:"Cart Demo"
+        
+  deploy_remote:
+    needs: deploy_local
+    runs-on: win2019dc03
+    environment:
+      name: IIS_Environment.Prod
+
+    steps: 
+    - name: Stop Website
+      run: |
+        # Stop the IIS website
+        C:\Windows\System32\inetsrv\appcmd stop site /site.name:"Cart Demo"
+
+    - name: Prepare local folders
+      run: |       
+        Remove-Item 'c:\pub\react-03_bak1' -Recurse -ErrorAction Ignore
+        Remove-Item 'c:\pub\react-03_bak' -Recurse -ErrorAction Ignore
+        ren c:\pub\react-03 react-03_bak
+        md c:\pub\react-03
+
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: cartreact
+        path: c:\pub\react-03
+
+    - name: Start Website
+      run: |
+        # Start the IIS website
+        C:\Windows\System32\inetsrv\appcmd start site /site.name:"Cart Demo"
+ 
