@@ -27,6 +27,9 @@ jobs:
       - name: Run NPM Build
         run: npm run build
       
+      - name: Copy web.config to dist folder
+        run: cp web.config dist/
+
       - name: Share Artifact Inside Workflow
         uses: actions/upload-artifact@v4
         with:
